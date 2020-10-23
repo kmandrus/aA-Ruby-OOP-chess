@@ -1,11 +1,25 @@
 class Piece
+    attr_reader :color
+    attr_accessor :pos
 
-    def initialize
-        
+    def initialize(board, color, pos)
+        @board = board
+        @color = color
+        @pos = pos
+    end
+
+    def to_s
+        "#P#"
     end
 
     def inspect
-        "#P#"
+        "@color = #{@color}, @pos = #{@pos}"
+    end
+
+    def valid_move?(pos)
+        return false unless @board.on_board?(pos)
+        return false if @board[pos].color == @color
+        true
     end
 
 end
