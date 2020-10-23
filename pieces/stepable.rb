@@ -7,6 +7,7 @@ module Stepable
             pos = [x + dx, y + dy]
             valid_moves << pos if valid_move?(pos)
         end
+        valid_moves
     end
 
     private

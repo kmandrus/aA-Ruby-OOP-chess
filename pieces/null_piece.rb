@@ -5,11 +5,19 @@ class Null_Piece < Piece
     include Singleton
 
     def initialize
-        super(nil, nil, nil)
+        super(nil, :gray, nil)
     end
 
-    def to_s
-        "___"
+    def symbol
+        :_
+    end
+
+    def empty?
+        true
+    end
+
+    def moves
+        []
     end
 
 end

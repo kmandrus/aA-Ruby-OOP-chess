@@ -1,3 +1,5 @@
+require 'colorize'
+
 class Piece
     attr_reader :color
     attr_accessor :pos
@@ -8,8 +10,12 @@ class Piece
         @pos = pos
     end
 
+    def symbol
+        :Z
+    end
+
     def to_s
-        "#P#"
+        " #{symbol} ".colorize(:color => color, :background => :blue)
     end
 
     def inspect
@@ -20,6 +26,13 @@ class Piece
         return false unless @board.on_board?(pos)
         return false if @board[pos].color == @color
         true
+    end
+
+    def move_into_check?(end_pos)
+    end
+
+    def empty?
+        false
     end
 
 end
