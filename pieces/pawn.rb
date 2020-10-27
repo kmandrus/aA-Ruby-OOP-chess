@@ -38,10 +38,17 @@ class Pawn < Piece
 
     def forward_steps
         y, x = @pos
-        possible_moves = []
-        possible_moves << [y + forward_dir, x]
-        possible_moves << [y + (forward_dir * 2), x] if at_start_row?
-        possible_moves.select { |pos| @board[pos].empty? }
+        steps = []
+        one_step = [y + forward_dir, x]
+        two_steps = [y + (forward_dir * 2), x]
+
+        if @board[one_step].empty?
+            steps << one_step
+            if @board[two_steps].empty? && at_start_row?
+                steps << two_steps
+            end
+        end
+        steps
     end
 
     def side_attack
@@ -57,10 +64,6 @@ class Pawn < Piece
         threatened_positions.select do |pos|
             !@board[pos].empty? && @board[pos].color != @color
         end
-    end
-    
-    def move_dirs
-        
     end
     
 end
