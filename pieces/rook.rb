@@ -12,6 +12,10 @@ class Rook < Piece
         :R
     end
 
+    def dup(new_board)
+        Rook.new(new_board, @color, @pos)
+    end
+
     private
     def move_dirs
         horizontal_dirs

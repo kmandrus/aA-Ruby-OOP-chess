@@ -1,5 +1,6 @@
 require_relative "stepable"
 require_relative "piece"
+require "byebug"
 
 class Pawn < Piece
 
@@ -13,6 +14,14 @@ class Pawn < Piece
 
     def moves 
         forward_steps + side_attack
+    end
+
+    def threatened_positions
+        side_attack
+    end
+
+    def dup(new_board)
+        Pawn.new(new_board, @color, @pos)
     end
     
     private
@@ -52,7 +61,9 @@ class Pawn < Piece
             [y + dy, x + dx]
         end
         threatened_positions.select do |pos|
-            !@board[pos].empty? && @board[pos].color != @color
+            @board.on_board?(pos) && 
+            !@board[pos].empty? && 
+            @board[pos].color != @color
         end
     end
     

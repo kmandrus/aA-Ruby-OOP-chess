@@ -29,19 +29,24 @@ class Piece
         true
     end
 
+    def opposing_color
+        @color == :black ? :white : :black
+    end
+
     def move_into_check?(end_pos)
-        #find your color's king
-        #determine if the new board state will put the king in check
-        #loop over all the enemy pieces and check if the King is in one of their threatened squares
-        #aA examines the new board state by duplicating the board... 
+        copied_board = @board.dup
+        copied_board[@pos] = Null_Piece.instance
+        copied_board[end_pos] = self
+        @pos = end_pos
+        copied_board.king(@color).in_check?
+    end
+
+    def threatened_positions
+        moves
     end
 
     def empty?
         false
-    end
-
-    def dup(new_board)
-        Self.new(new_board, @color, @pos)
     end
 
 end

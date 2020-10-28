@@ -23,6 +23,10 @@ class Knight < Piece
         :N
     end
 
+    def dup(new_board)
+        Knight.new(new_board, @color, @pos)
+    end
+
     private
     def move_diffs
         MOVE_DIFFS

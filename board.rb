@@ -19,6 +19,9 @@ class Board
         unless piece.moves.include?(end_pos)
             raise ChessError.new("cannot move to end position")
         end
+        if piece.move_into_check?(end_pos)
+            raise ChessError.new, "cannot move into check"
+        end
 
         self[start_pos] = Null_Piece.instance
         self[end_pos] = piece
@@ -28,11 +31,23 @@ class Board
     def dup
         copied_board = Board.new(true)
         @rows.each_with_index do |row, y|
-            row.each_with_index do |piece, x|
-                piece.dup(copied_board) unless piece.empty?
+            row.each_with_index do |square, x|
+                square.dup(copied_board) unless square.empty?
             end
         end
         copied_board
+    end
+
+    def pieces(color)
+        rows.flatten.select { |piece| piece.color == color }
+    end
+
+    def king(color)
+        rows.flatten.each do |piece| 
+            if piece.color == color && piece.is_a?(King)
+                return piece
+            end
+        end
     end
 
     def debug_render

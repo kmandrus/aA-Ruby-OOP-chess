@@ -23,6 +23,16 @@ class King < Piece
         :K
     end
 
+    def in_check?
+        @board.pieces(opposing_color).any? do |piece|
+            piece.threatened_positions.include?(@pos)
+        end
+    end
+
+    def dup(new_board)
+        King.new(new_board, @color, @pos)
+    end
+
     private
     def move_diffs
         MOVE_DIFFS
