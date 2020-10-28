@@ -52,6 +52,7 @@ class Board
             setup_pawns(color)
         end
     end
+
     def setup_back_row(color)
         piece_classes = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
         y = color == :black ? 0 : 7

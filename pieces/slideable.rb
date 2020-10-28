@@ -25,14 +25,14 @@ module Slideable
     end
 
     def grow_unblocked_moves_in_dir(dx, dy)
-        x, y = @pos
+        y, x = @pos
         moves = []
-        new_pos = [x + dx, y + dy]
+        new_pos = [y + dy, x + dx]
         while valid_move?(new_pos)
             moves << new_pos
             break unless @board[new_pos].is_a?(Null_Piece) 
-            x, y = new_pos
-            new_pos = [x + dx, y + dy]
+            y, x = new_pos
+            new_pos = [y + dy, x + dx]
         end
         moves
     end

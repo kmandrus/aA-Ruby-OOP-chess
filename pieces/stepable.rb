@@ -2,9 +2,9 @@ module Stepable
     def moves
         valid_moves = []
         move_diffs.each do |diff|
-            x, y = @pos
-            dx, dy = diff
-            pos = [x + dx, y + dy]
+            y, x = @pos
+            dy, dx = diff
+            pos = [y + dy, x + dx]
             valid_moves << pos if valid_move?(pos)
         end
         valid_moves
