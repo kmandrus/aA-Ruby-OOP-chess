@@ -4,9 +4,9 @@ require "colorize"
 
 class Board
     attr_reader :rows
-    def initialize
+    def initialize(empty_board=false)
         @rows = Array.new(8) { Array.new(8, Null_Piece.instance) }
-        setup_grid
+        setup_grid unless empty_board
     end
 
     def move_piece(start_pos, end_pos)
@@ -23,6 +23,16 @@ class Board
         self[start_pos] = Null_Piece.instance
         self[end_pos] = piece
         piece.pos = end_pos
+    end
+
+    def dup
+        copied_board = Board.new(true)
+        @rows.each_with_index do |row, y|
+            row.each_with_index do |piece, x|
+                piece.dup(copied_board) unless piece.empty?
+            end
+        end
+        copied_board
     end
 
     def debug_render

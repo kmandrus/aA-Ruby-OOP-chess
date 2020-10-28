@@ -2,19 +2,8 @@ require_relative "stepable"
 require_relative "piece"
 
 class Pawn < Piece
-    MOVE_DIFFS = [
-        [0, 1],
-        [1, 1],
-        [1, 0],
-        [1, -1],
-        [0, -1],
-        [-1, -1],
-        [-1, 0],
-        [-1, 1]
-    ]
 
     def initialize(board, color, pos)
-        @start_row = pos[0]
         super
     end
 
@@ -28,11 +17,12 @@ class Pawn < Piece
     
     private
     def at_start_row?
-        @pos[0] == @start_row
+        start_row_num = @color == :black ? 1 : 6
+        start_row_num == @pos[0]
     end
     
     def forward_dir
-        return 1 if @start_row == 1
+        return 1 if @color == :black
          -1
     end
 
