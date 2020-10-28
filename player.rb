@@ -5,5 +5,9 @@ class Player
         @color = color
         @display = display
     end
+
+    def make_move(board)
+        raise "subclass must override"
+    end
     
 end

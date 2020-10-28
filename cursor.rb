@@ -32,7 +32,11 @@ class Cursor
             @selected = square.pos unless square.empty?
         when " " #SPACE BAR
             #move selected piece
-            return [selected, cursor_pos] if @selected
+            if @selected
+                temp_selected = selected
+                toggle_selected
+                return [temp_selected, cursor_pos]
+            end
         when "\e" #ESCAPE
             #quit game
             exit 0
