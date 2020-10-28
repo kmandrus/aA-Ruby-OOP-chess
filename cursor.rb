@@ -13,12 +13,13 @@ class Cursor
         if selected == nil
             puts "select a piece by pressing return"
         else
-            puts "move the piece by pressing spacebar"
+            puts "move a selected piece by pressing spacebar"
         end
         handle_key(read_char)
     end
 
     def toggle_selected
+        @selected = nil
     end
 
     private
@@ -28,13 +29,10 @@ class Cursor
 
         case key
         when "\r" #RETURN
-            @selected = square unless square.empty?
+            @selected = square.pos unless square.empty?
         when " " #SPACE BAR
             #move selected piece
-            if @selected
-                @board.move_piece(@selected.pos, @cursor_pos)
-                @selected = nil
-            end
+            return [selected, cursor_pos] if @selected
         when "\e" #ESCAPE
             #quit game
             exit 0
@@ -51,6 +49,7 @@ class Cursor
         when "\u0003" #CONTROL C
             exit 0
         end
+        return false
     end
     def read_char
         STDIN.echo = false

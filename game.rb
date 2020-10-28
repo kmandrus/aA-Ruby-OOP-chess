@@ -13,6 +13,15 @@ class Game
     def play
         until game_over?
             @display.render
+            move = @display.get_input
+            if move
+                begin
+                    @board.move_piece(*move) 
+                rescue ChessError => e
+                    puts e.message
+                    sleep(1)
+                end
+            end
         end
     end
 

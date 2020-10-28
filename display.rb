@@ -19,6 +19,9 @@ class Display
             puts
         end
         puts
+    end
+
+    def get_input
         @cursor.get_input
     end
 
