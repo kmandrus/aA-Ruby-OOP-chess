@@ -1,6 +1,7 @@
 require_relative 'board.rb'
 require_relative 'display.rb'
 require_relative 'human_player.rb'
+require_relative 'ai_player.rb'
 
 class Game
 
@@ -9,7 +10,7 @@ class Game
         @display = Display.new(@board)
         @players = {
             :black => Human_Player.new(:black, @display),
-            :white => Human_Player.new(:white, @display)
+            :white => AI_Player.new(:white, @display)
         }
         @current_player = @players[:white]
     end
@@ -18,7 +19,7 @@ class Game
         until game_over?
             @display.render
             move = @current_player.make_move(@board)
-            process_human_move(move)
+            process_move(move)
         end    
         @display.render
         game_over_message
@@ -41,7 +42,7 @@ class Game
         @board.checkmate?(@current_player.color)
     end
 
-    def process_human_move(move)
+    def process_move(move)
         if move
             begin
                 selected_piece = @board[move[0]]
