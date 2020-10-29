@@ -14,6 +14,10 @@ class Null_Piece < Piece
         :_
     end
 
+    def to_s
+        "   "
+    end
+
     def empty?
         true
     end

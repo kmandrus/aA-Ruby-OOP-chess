@@ -9,7 +9,11 @@ class Rook < Piece
     end
 
     def symbol
-        :R
+        if color == :black
+            :♜
+        else
+            :♖
+        end
     end
 
     private

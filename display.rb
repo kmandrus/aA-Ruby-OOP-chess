@@ -28,8 +28,19 @@ class Display
     private
 
     def print_val(square, pos)
-        return square.to_s.on_yellow if pos == @cursor.cursor_pos
-        square.to_s
+        if pos == @cursor.cursor_pos || pos == @cursor.selected
+            square.to_s.on_yellow
+        else
+            square.to_s.colorize(:background => square_color(pos))
+        end
     end
 
+    def square_color(pos)
+        y, x = pos
+        if y.even?
+            x.even? ? :blue : :black
+        else
+            x.even? ? :black : :blue
+        end
+    end
 end

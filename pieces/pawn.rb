@@ -9,7 +9,11 @@ class Pawn < Piece
     end
 
     def symbol
-        :P
+        if color == :black
+            :♟︎
+        else
+            :♙
+        end
     end
 
     def moves 

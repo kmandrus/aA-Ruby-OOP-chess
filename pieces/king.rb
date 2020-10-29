@@ -20,7 +20,11 @@ class King < Piece
     end
 
     def symbol
-        :K
+        if color == :black
+            :♚
+        else
+            :♔
+        end
     end
 
     def in_check?

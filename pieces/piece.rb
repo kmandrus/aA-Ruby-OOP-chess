@@ -16,7 +16,7 @@ class Piece
     end
 
     def to_s
-        " #{symbol} ".colorize(:color => color, :background => :blue)
+        " #{symbol} "
     end
     
     def valid_moves

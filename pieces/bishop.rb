@@ -9,7 +9,11 @@ class Bishop < Piece
     end
 
     def symbol
-        :B
+        if color == :black
+            :♝
+        else
+            :♗
+        end
     end
 
     private

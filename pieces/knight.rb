@@ -20,7 +20,11 @@ class Knight < Piece
     end
 
     def symbol
-        :N
+        if color == :black
+            :♞
+        else
+            :♘
+        end
     end
 
     private
