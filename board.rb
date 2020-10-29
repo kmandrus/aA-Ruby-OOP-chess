@@ -38,6 +38,15 @@ class Board
         copied_board
     end
 
+    def checkmate?(color)
+        if king(color).in_check? && 
+            pieces(color).none? { |piece| piece.valid_moves.length > 0 }
+                
+            return true
+        end
+        false
+    end
+
     def pieces(color)
         rows.flatten.select { |piece| piece.color == color }
     end

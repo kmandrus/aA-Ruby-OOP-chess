@@ -19,6 +19,10 @@ class Piece
         " #{symbol} ".colorize(:color => color, :background => :blue)
     end
 
+    def moves
+        raise "subclass must override"
+    end
+
     def inspect
         "@color = #{@color}, @pos = #{@pos}"
     end
@@ -27,6 +31,10 @@ class Piece
         return false unless @board.on_board?(pos)
         return false if @board[pos].color == @color
         true
+    end
+
+    def valid_moves
+        moves.select { |move| !move_into_check?(move) } 
     end
 
     def opposing_color

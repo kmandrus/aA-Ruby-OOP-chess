@@ -39,6 +39,7 @@ class Game
     end
 
     def game_over?
+        @board.checkmate?(@current_player.color)
     end
 
     def process_human_move(move)
@@ -55,6 +56,11 @@ class Game
                 sleep(1)
             end
         end
+    end
+
+    def game_over_message
+        puts "checkmate!"
+        puts "#{@current_player.color} loses"
     end
 
 end
