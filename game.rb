@@ -22,7 +22,8 @@ class Game
             move = @current_player.make_move
             process_human_move(move)
         end    
-        
+        @display.render
+        game_over_message
     end
 
     private

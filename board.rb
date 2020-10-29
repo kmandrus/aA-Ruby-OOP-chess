@@ -11,18 +11,20 @@ class Board
 
     def move_piece(start_pos, end_pos)
         piece = self[start_pos]
-        #raise exception if there is no piece to move at start_pos
         if piece.is_a?(Null_Piece)
             raise ChessError.new("no piece at start position")
         end
-        #raise exception if the piece cannot move to end_pos
-        unless piece.moves.include?(end_pos)
-            raise ChessError.new("cannot move to end position")
-        end
-        if piece.move_into_check?(end_pos)
-            raise ChessError.new, "cannot move into check"
+        unless piece.valid_moves.include?(end_pos)
+            raise ChessError, "cannot move to position"
         end
 
+        self[start_pos] = Null_Piece.instance
+        self[end_pos] = piece
+        piece.pos = end_pos
+    end
+
+    def move_piece!(start_pos, end_pos)
+        piece = self[start_pos]
         self[start_pos] = Null_Piece.instance
         self[end_pos] = piece
         piece.pos = end_pos
