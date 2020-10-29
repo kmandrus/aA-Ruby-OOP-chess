@@ -22,4 +22,8 @@ class Null_Piece < Piece
         []
     end
 
+    def copy_to(new_board)
+        raise "cannot copy singleton"
+    end
+
 end

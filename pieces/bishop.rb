@@ -12,10 +12,6 @@ class Bishop < Piece
         :B
     end
 
-    def dup(new_board)
-        Bishop.new(new_board, @color, @pos)
-    end
-
     private
     def move_dirs
         diagonal_dirs

@@ -2,7 +2,7 @@ require 'colorize'
 
 class Piece
     attr_reader :color
-    attr_accessor :pos
+    attr_accessor :pos, :board
 
     def initialize(board, color, pos)
         @board = board
@@ -55,6 +55,12 @@ class Piece
 
     def empty?
         false
+    end
+
+    def copy_to(new_board)
+        copy = dup
+        copy.board = new_board
+        new_board[pos] = copy
     end
 
 end

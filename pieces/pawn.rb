@@ -19,10 +19,6 @@ class Pawn < Piece
     def threatened_positions
         side_attack
     end
-
-    def dup(new_board)
-        Pawn.new(new_board, @color, @pos)
-    end
     
     private
     def at_start_row?

@@ -29,13 +29,13 @@ class Board
     end
 
     def dup
-        copied_board = Board.new(true)
+        new_board = Board.new(true)
         @rows.each_with_index do |row, y|
             row.each_with_index do |square, x|
-                square.dup(copied_board) unless square.empty?
+                square.copy_to(new_board) unless square.empty?
             end
         end
-        copied_board
+        new_board
     end
 
     def checkmate?(color)

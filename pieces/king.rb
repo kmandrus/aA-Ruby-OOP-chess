@@ -29,10 +29,6 @@ class King < Piece
         end
     end
 
-    def dup(new_board)
-        King.new(new_board, @color, @pos)
-    end
-
     private
     def move_diffs
         MOVE_DIFFS
