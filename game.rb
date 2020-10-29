@@ -17,9 +17,7 @@ class Game
     def play
         until game_over?
             @display.render
-            puts "#{@current_player.color}'s turn'"
-            sleep(1)
-            move = @current_player.make_move
+            move = @current_player.make_move(@board)
             process_human_move(move)
         end    
         @display.render
