@@ -1,7 +1,37 @@
 require "io/console"
 
 class Cursor
-    attr_accessor :board, :cursor_pos, :selected
+    attr_reader :board, :cursor_pos, :selected
+
+    KEYMAP = {
+        " " => :space,
+        "h" => :left,
+        "j" => :down,
+        "k" => :up,
+        "l" => :right,
+        "w" => :up,
+        "a" => :left,
+        "s" => :down,
+        "d" => :right,
+        "\t" => :tab,
+        "\r" => :return,
+        "\n" => :newline,
+        "\e" => :escape,
+        "\e[A" => :up,
+        "\e[B" => :down,
+        "\e[C" => :right,
+        "\e[D" => :left,
+        "\177" => :backspace,
+        "\004" => :delete,
+        "\u0003" => :ctrl_c,
+    }
+
+    MOVES = {
+        left: [0, -1],
+        right: [0, 1],
+        up: [-1, 0],
+        down: [1, 0]
+    }
 
     def initialize(board)
         @board = board
@@ -10,47 +40,38 @@ class Cursor
     end
 
     def get_input
-        if selected == nil
-            puts "select a piece by pressing return"
-        else
-            puts "move a selected piece by pressing spacebar"
-        end
-        handle_key(read_char)
+        display_instructions
+        key = KEYMAP[read_char]
+        handle_key(key)
     end
 
     def toggle_selected
-        @selected = nil
+        @selected = nil if @selected
     end
 
     private
 
     def handle_key(key)
-        square = @board[cursor_pos]
-
         case key
-        when "\r" #RETURN
-            @selected = square.pos unless square.empty?
-        when " " #SPACE BAR
-            #move selected piece
+        when :return
             if @selected
-                temp_selected = selected
+                start_pos, end_pos = selected, cursor_pos
                 toggle_selected
-                return [temp_selected, cursor_pos]
+                return [start_pos, end_pos]
+            else
+                @selected = cursor_pos unless @board[cursor_pos].empty?
             end
-        when "\e" #ESCAPE
-            #quit game
-            exit 0
-        when "s"
-            #save game
-        when "\e[A" #UP ARROW
-            update_pos([-1, 0])
-        when "\e[B" #DOWN ARROW
-            update_pos([1, 0])
-        when "\e[C" #RIGHT ARROW
-            update_pos([0, 1])
-        when "\e[D" #LEFT ARROW
-            update_pos([0, -1])
-        when "\u0003" #CONTROL C
+        when :escape
+            toggle_selected
+        when :up
+            update_pos(MOVES[:up])
+        when :down
+            update_pos(MOVES[:down])
+        when :right
+            update_pos(MOVES[:right])
+        when :left
+            update_pos(MOVES[:left])
+        when :ctrl_c 
             exit 0
         end
         return false
@@ -76,6 +97,15 @@ class Cursor
         dy, dx = diff
         new_pos = [y + dy, x + dx]
         @cursor_pos = new_pos if @board.on_board?(new_pos)
+    end
+
+    def display_instructions
+        if selected == nil
+            puts "select a piece by pressing return"
+        else
+            puts "move the selected piece by pressing return"
+            puts "clear your selection by pressing esc"
+        end
     end
 
 end
