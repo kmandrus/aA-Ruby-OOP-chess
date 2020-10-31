@@ -3,6 +3,10 @@ require_relative 'chess_error.rb'
 require "colorize"
 
 class Board
+    def self.opposite_color(color)
+        color == :black ? :white : :black
+    end
+
     attr_reader :rows
     def initialize(empty_board=false)
         @rows = Array.new(8) { Array.new(8, Null_Piece.instance) }

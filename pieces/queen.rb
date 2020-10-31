@@ -5,6 +5,7 @@ class Queen < Piece
     include Slideable
 
     def initialize(board, color, pos)
+        @points = 9
         super
     end
 

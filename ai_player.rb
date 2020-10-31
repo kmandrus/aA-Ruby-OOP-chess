@@ -1,4 +1,6 @@
 require_relative 'player.rb'
+require_relative 'chess_node.rb'
+require_relative 'board.rb'
 
 class AI_Player < Player
     
@@ -7,7 +9,7 @@ class AI_Player < Player
     end
 
     def make_move(board)
-        random_move(board)
+        bfs_move(board, 4)
     end
 
     private
@@ -20,6 +22,21 @@ class AI_Player < Player
             end
         end
         raise "unable to find any valid moves for AI player"
+    end
+
+    def bfs_move(board, max_depth)
+        root = Chess_Node.new(board, color, color, 1)
+        root.make_tree(max_depth)
+        nodes = root.children.dup
+        best_nodes = [nodes.pop]
+        nodes.each do |child|
+            if child.final_score > best_nodes.first.final_score
+                best_nodes = [child]
+            elsif child.final_score == best_nodes.first.final_score
+                best_nodes << child
+            end
+        end
+        best_nodes.shuffle.first.previous_move
     end
     
 end

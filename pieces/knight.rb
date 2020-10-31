@@ -16,6 +16,7 @@ class Knight < Piece
     include Stepable
 
     def initialize(board, color, pos)
+        @points = 3
         super
     end
 

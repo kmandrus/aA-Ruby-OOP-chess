@@ -6,6 +6,7 @@ class Rook < Piece
 
     def initialize(board, color, pos)
         super
+        @points = 5
     end
 
     def symbol

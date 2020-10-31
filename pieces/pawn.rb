@@ -5,6 +5,7 @@ require "byebug"
 class Pawn < Piece
 
     def initialize(board, color, pos)
+        @points = 1
         super
     end
 

@@ -45,6 +45,7 @@ class Game
     def process_move(move)
         if move
             begin
+                p move
                 selected_piece = @board[move[0]]
                 unless selected_piece.color == @current_player.color
                     raise ChessError, "cannot move a piece of the opposing color"

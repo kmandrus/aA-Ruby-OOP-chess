@@ -16,6 +16,7 @@ class King < Piece
     include Stepable
 
     def initialize(board, color, pos)
+        @points = 0
         super
     end
 

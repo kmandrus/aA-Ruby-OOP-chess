@@ -5,6 +5,7 @@ class Bishop < Piece
     include Slideable
 
     def initialize(board, color, pos)
+        @points = 3
         super
     end
 
