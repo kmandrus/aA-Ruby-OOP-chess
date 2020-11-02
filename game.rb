@@ -2,10 +2,12 @@ require_relative 'board.rb'
 require_relative 'display.rb'
 require_relative 'human_player.rb'
 require_relative 'ai_player.rb'
+require_relative 'logger.rb'
 
 class Game
 
     def initialize
+        Logger.configure('log.txt')
         @board = Board.new
         @display = Display.new(@board)
         @players = {
@@ -13,12 +15,15 @@ class Game
             :white => AI_Player.new(:white, @display)
         }
         @current_player = @players[:white]
+        @turn = 1
     end
 
     def play
         until game_over?
+            Logger.update(@turn, @current_player.color)
             @display.render
             move = @current_player.make_move(@board)
+            log_move(move)
             process_move(move)
         end    
         @display.render
@@ -45,15 +50,16 @@ class Game
     def process_move(move)
         if move
             begin
-                p move
                 selected_piece = @board[move[0]]
                 unless selected_piece.color == @current_player.color
                     raise ChessError, "cannot move a piece of the opposing color"
                 end 
                 @board.move_piece(*move)
+                @turn += 1
                 swap_turn!
             rescue ChessError => e
                 puts e.message
+                Logger.log_error(e)
                 sleep(1)
             end
         end
@@ -62,6 +68,15 @@ class Game
     def game_over_message
         puts "checkmate!"
         puts "#{@current_player.color} loses"
+    end
+
+    def log_move(move)
+        unless move == nil
+            start_pos, end_pos = move
+            piece = @board[start_pos].symbol.to_s
+            Logger.log_move(piece, move)
+        end
+
     end
 
 end
