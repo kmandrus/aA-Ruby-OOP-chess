@@ -1,4 +1,6 @@
 require_relative "chess_error.rb"
+require_relative "chess_node.rb"
+require_relative 'board.rb'
 
 class Logger
 
@@ -34,6 +36,17 @@ class Logger
     def self.log_error(error)
         file = File.open(@@file_path, "a")
         file.print(self.prefix + error.message + "\n")
+        file.close
+    end
+
+    def self.log_node_and_children(node)
+        file = File.open(@@file_path, "a")
+        file.print(self.prefix + "Node and Children:\n")
+        file.print("node:" + "\n" + node.board.to_s)
+        node.children.each_with_index do |child, i|
+            file.print("\t" + "child #{i}:\n")
+            file.print(child.board.to_s)
+        end
         file.close
     end
 

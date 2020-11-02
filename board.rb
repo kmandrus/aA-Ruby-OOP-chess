@@ -65,11 +65,12 @@ class Board
         end
     end
 
-    def debug_render
+    def to_s
+        str = ""
         rows.each do |row| 
-            print row.join("") + "\n"
+            str << row.join("") + "\n"
         end
-        puts
+        str << "\n"
     end
 
     def [](pos)
@@ -83,6 +84,16 @@ class Board
 
     def on_board?(pos)
         pos.all? { |val| val >= 0 && val < 8 }
+    end
+
+    def ==(other_board)
+        rows.each_with_index do |row, y|
+            row.each_with_index do |piece_1, x|
+                piece_2 = other_board[[y, x]]
+                return false unless piece_1 == piece_2
+            end
+        end
+        true
     end
     
     private

@@ -5,7 +5,7 @@ class Null_Piece < Piece
     include Singleton
 
     def initialize
-        @color = :default
+        @color = nil
         @board = nil
         @pos = nil
     end

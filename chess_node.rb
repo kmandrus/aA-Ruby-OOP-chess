@@ -2,8 +2,8 @@ require_relative 'board.rb'
 require_relative './pieces/piece.rb'
 
 class Chess_Node
-    attr_reader :children
-    attr_accessor :parent, :children, :previous_move
+    attr_reader :children, :board, :active_player_color
+    attr_accessor :parent, :children, :previous_move, :depth
     
     def initialize(board, evaluator_color, active_player_color, depth)
         @board = board
@@ -14,21 +14,52 @@ class Chess_Node
         @opponent_color = Board.opposite_color(evaluator_color)
         @depth = depth
         @previous_move = nil
-    end
-
-    def make_tree(max_depth)
-        unless @depth >= max_depth ||
-            @board.checkmate?(@evaluator_color) ||
-            @board.checkmate?(@opponent_color)
-            
-            add_children
-            children.each { |child| child.make_tree(max_depth) }    
-        end
+        @checkmate = nil
     end
 
     def final_score
         compute_final_score if @final_score == nil
         @final_score
+    end
+
+    def grow_tree(current_depth, max_depth)
+        clear_score
+        @depth = current_depth
+        unless @depth >= max_depth || checkmate?
+            add_children if leaf?
+            children.each do |child| 
+                child.grow_tree(current_depth + 1, max_depth)
+            end
+        end
+        compute_final_score
+    end
+
+    def prune_tree(new_root_board)
+        queue = [self]
+        while queue.length > 0
+            node = queue.shift
+            if (
+                node.board == new_root_board &&
+                node.active_player_color == @evaluator_color 
+            )
+                return make_root(node)
+            end 
+            queue.concat node.children
+        end
+        raise "could not find new_root_board"
+        nil
+    end
+
+    def leaf?
+        children.empty?
+    end
+
+    def checkmate?
+        if @checkmate == nil
+            @checkmate = @board.checkmate?(@evaluator_color) || 
+                         @board.checkmate?(@opponent_color)
+        end
+        @checkmate
     end
 
     private
@@ -84,5 +115,15 @@ class Chess_Node
             piece.valid_moves.each { |end_pos| moves << [start_pos, end_pos] }
         end
         moves
+    end
+
+    def make_root(node)
+        node.parent = nil
+        node.previous_move = nil
+        return node
+    end
+
+    def clear_score
+        @final_score = nil
     end
 end

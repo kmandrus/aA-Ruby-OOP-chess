@@ -49,6 +49,13 @@ class Piece
         new_board[pos] = copy
     end
 
+    def ==(other_piece)
+        if self.class == other_piece.class && self.color == other_piece.color
+            return true
+        end
+        false
+    end
+
     private
     def valid_move?(pos)
         return false unless @board.on_board?(pos)

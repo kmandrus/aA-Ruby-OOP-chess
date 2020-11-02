@@ -1,15 +1,17 @@
 require_relative 'player.rb'
 require_relative 'chess_node.rb'
 require_relative 'board.rb'
+require_relative 'logger.rb'
 
 class AI_Player < Player
     
     def initialize(color, display)
+        @root = nil
         super
     end
 
     def make_move(board)
-        bfs_move(board, 4)
+        bfs_move(board, 5)
     end
 
     private
@@ -25,18 +27,26 @@ class AI_Player < Player
     end
 
     def bfs_move(board, max_depth)
-        root = Chess_Node.new(board, color, color, 1)
-        root.make_tree(max_depth)
-        nodes = root.children.dup
-        best_nodes = [nodes.pop]
-        nodes.each do |child|
-            if child.final_score > best_nodes.first.final_score
-                best_nodes = [child]
-            elsif child.final_score == best_nodes.first.final_score
-                best_nodes << child
+        @root = @root.prune_tree(board) unless @root == nil
+        if @root == nil
+            @root = Chess_Node.new(board.dup, color, color, 1) 
+        end
+        @root.grow_tree(1, max_depth)
+        b_node = best_node(@root.children)
+        b_node.previous_move
+    end
+
+    private 
+    def best_node(nodes)
+        nodes_copy = nodes.dup
+        best_nodes = [nodes_copy.pop]
+        nodes_copy.each do |node|
+            if node.final_score > best_nodes.first.final_score
+                best_nodes = [node]
+            elsif node.final_score == best_nodes.first.final_score
+                best_nodes << node
             end
         end
-        best_nodes.shuffle.first.previous_move
+        best_nodes.shuffle.first
     end
-    
 end
